@@ -4,11 +4,13 @@ import time
 import random
 import numpy as np
 import player
+import food
 
 
 class Agaria:
     def __init__(self, rendering = True):
         self.agents: [player.Player] = []
+        self.foods: [food.Food] = []
         self.player_lastID = 0
         self.rendering = rendering
         self.start_time = time.time()
@@ -58,6 +60,8 @@ class Agaria:
             # game logic
             for a in self.agents:
                 pygame.draw.circle(self.screen, a.getColor(), a.getPosition(), a.getSize())
+            for f in self.foods:
+                pygame.draw.circle(self.screen, f.color, f.position, f.size)
             pygame.display.flip()
         else:
             raise RuntimeError("Render was called while self.is_running == False")
@@ -76,8 +80,13 @@ class Agaria:
         self.agents.append(p)
         return p
 
+    def newFood(self):
+        f = food.Food(position=(50,50))
+        self.foods.append(f)
+        return f
+
     def getPlayerRAM(self, p):
-        #update the ram ? probably not
+        # update the ram ? probably not
         return p.getRAM()
 
     # ---- IA SPECIFIC BELOW ----
